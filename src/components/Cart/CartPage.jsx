@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
       <CardMedia
         className={classes.cover}
         image={product?.Image ? product.Image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbRau4KXNKRF9GlWLddy_24LrMWRbbo2Vq5g&usqp=CAU" }
-        title="Live from space album cover"
+        title="Brand Image"
       />
     </Card>
     );
