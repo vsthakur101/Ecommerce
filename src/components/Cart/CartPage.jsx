@@ -6,15 +6,17 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
+import { deleteCartItem  } from '../../Store/Actions/ProductAction';
 
 
-import { useSelector } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    marginBottom: '1rem'
   },
   details: {
     display: 'flex',
@@ -40,35 +42,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
  function CartPage(props) {
-  const [product, setProduct] = useState([]);
   const [deletedProduct, setDeletedProduct] = useState(false);
-  const count = useSelector(state => state)
-  setTimeout(()=>{
-    if(!product[0] && !deletedProduct){
-    setProduct(count?.product[0]);
-    }
-  },2000)
+  const count = useSelector(state => state.product)
   const classes = useStyles();
-  const theme = useTheme();
+  const dispatch = useDispatch();
+  if(!count.length){
+    return  null;
+  };
+
   return (
-        <Card className={classes.root}>
+    <div>
+    {
+      count.map(p=> (
+        <Card className={classes.root} key={p.Id}>
       <div className={classes.details}>
         <CardContent className={classes.content}>
           <Typography component="h5" variant="h5">
-            {product?.Brand ? product.Brand : 'Add Some Product'}
+            {p?.Brand ? p.Brand : 'Add Some Product'}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            {product?.Price ? product.Price : '0'}
+            {p?.Price ? p.Price : '0'}
           </Typography>
         </CardContent>
         <div className={classes.controls}>
-        { product?.Brand ?
+        { p?.Brand ?
           <Button
         variant="contained"
         color="secondary"
         className={classes.button}
         startIcon={<DeleteIcon />}
-        onClick={()=>{setProduct([]); setDeletedProduct(true)}}
+        onClick={()=>{
+          dispatch(deleteCartItem(p.Id))}}
       >
         Delete
       </Button> : ''
@@ -77,10 +81,12 @@ const useStyles = makeStyles((theme) => ({
       </div>
       <CardMedia
         className={classes.cover}
-        image={product?.Image ? product.Image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbRau4KXNKRF9GlWLddy_24LrMWRbbo2Vq5g&usqp=CAU" }
+        image={p?.Image ? p.Image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbRau4KXNKRF9GlWLddy_24LrMWRbbo2Vq5g&usqp=CAU" }
         title="Brand Image"
       />
-    </Card>
-    );
+    </Card>))
+    }
+      
+    </div>);
 }
 export default CartPage;

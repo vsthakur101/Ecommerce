@@ -11,5 +11,11 @@ export const setCartItemCount = (data)=>{
         payload: data,
     }
 }
+export const deleteCartItem = (data)=>{
+    return {
+        type: 'DELETE_CART_ITEM',
+        payload: data,
+    }
+}
 
 

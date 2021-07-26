@@ -49,14 +49,20 @@ export default function ProductDetails() {
   },[]);
   const Location = useLocation();
   const finalValue = Location.pathname.split("/")?.[2];
- const DetailsOfProduct = Product && Product.filter((item)=>{
+
+  useEffect(()=>{
+     const DetailsOfProduct = Product && Product.filter((item)=>{
    return item.Brand === finalValue;
   })
-  useEffect(()=>{setDetail(DetailsOfProduct)
+    setDetail(DetailsOfProduct && DetailsOfProduct[0])
     },[Product])
-    setTimeout(()=>{dispatch(setData(Details))},5000)
+    // setTimeout(()=>{},5000)
     
   const classes = useStyles();
+
+  if(!Details){
+    return null
+  }
 
   return (
     <Fragment>
@@ -69,14 +75,14 @@ export default function ProductDetails() {
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={Details && Details[0].Image}
+          image={Details.Image}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {Details && Details[0].Brand}
+            {Details.Brand}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {Details && Details[0].About}
+            {Details.About}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -84,7 +90,8 @@ export default function ProductDetails() {
       <CardActions>
         <Button size="small" color="primary" onClick={()=>{setNumberOfItems((prev)=>{
           return Quantity;
-        })}}>
+        })
+        dispatch(setData(Details))}}>
           Add To Cart
         </Button>
       </CardActions>
